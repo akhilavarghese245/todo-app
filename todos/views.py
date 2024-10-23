@@ -1,5 +1,3 @@
-from pydoc import describe
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import TaskSerializer
@@ -32,3 +30,12 @@ class TaskAPIView(APIView):
             task_serializer.update(task_info, validated_data = data)
             return Response({'message': 'task updated successfully', 'data':request.data}, status=status.HTTP_200_OK)
         return Response({'message': 'Error in adding task', 'data': {}}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request):
+        task_id = request.data.get('task_id')
+        try:
+            task_info = Task.objects.get(task_id=task_id)
+            task_info.delete()
+            return Response({'message': 'Task deleted successfully', 'data':{}}, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({'message': 'Task not found', 'data':{}}, status=status.HTTP_404_NOT_FOUND)
