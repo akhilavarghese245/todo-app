@@ -54,7 +54,7 @@ class TaskListView(APIView):
     def patch(self, request):
         try:
             task_id = request.data.get('task_id')
-            is_done = request.data.get('task_id')
+            is_done = request.data.get('is_done')
             task_info = Task.objects.get(task_id=task_id)
             data = {'is_done': is_done}
             task_serializer = TaskSerializer(instance=task_info, data=data, partial=True)
